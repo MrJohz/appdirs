@@ -2,6 +2,7 @@
 name = "Appdirs"
 version = "0.1.0"
 author = "Johz"
+license = "MIT"
 description = "A utility library to find the directory you need to app in."
 
 [Deps]
