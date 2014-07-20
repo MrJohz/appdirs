@@ -1,6 +1,6 @@
 [Package]
 name = "Appdirs"
-version = "0.1.0"
+version = "0.1.1"
 author = "Johz"
 license = "MIT"
 description = "A utility library to find the directory you need to app in."
