@@ -1,2 +1,4 @@
-*/**/nimcache
+*/**nimcache
 lib/appdirs
+nakefile
+nimcache

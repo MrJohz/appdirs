@@ -32,7 +32,7 @@ type
         version*: string
         use_roaming*: bool
 
-## USEFUL PROCS
+# USEFUL PROCS
 
 proc get_platform(platform:string = nil): string {.inline noSideEffect.} =
     if platform == nil:
@@ -47,9 +47,22 @@ proc empty_exists(name:string): bool {.inline.} =
         return os.get_env(name).strip() != ""
 
 
-## TAPPL CONSTRUCTOR
+# TAPPL CONSTRUCTOR
 
-proc application(name:string, author:string=nil, version:string=nil, roaming:bool=false): TAppl =
+proc application*(name:string, author:string=nil, version:string=nil, roaming:bool=false): TAppl =
+    ## Constructs a TAppl object with given args.
+    ##
+    ## The only required arg is `name`.  If `author` is not given, it defaults to `name`.  This is only
+    ## used on Windows machines, in which case the application directory will sit inside the author
+    ## directory.  On other platforms, `author` is ignored.
+    ##
+    ## If `version` is given, it is appended to any resultant directory.  This allows an application to
+    ## have multiple versions installed on one computer.
+    ## 
+    ## The `roaming` arg is also for Windows systems only, and decides if the directory can be shared
+    ## on any computer in a Windows network (roaming=true) or if it will be kept locally
+    ## (roaming=false).  Note that the cache and logs directory will always be kept locally.
+
     var auth: string
     if author == nil:
         auth = name
@@ -59,9 +72,12 @@ proc application(name:string, author:string=nil, version:string=nil, roaming:boo
     result = TAppl(name: name, author: auth, version: version, use_roaming: roaming)
 
 
-## USER DATA
+# USER DATA
 
-proc user_data*(roaming: bool = false, platform: string = nil): string = 
+proc user_data*(roaming: bool = false, platform: string = nil): string =
+    ## Returns the generic user data directory for a given platform.
+    ## The platform defaults to the currennt platform.
+
     var plat = get_platform(platform)
 
     if plat == "macosx":
@@ -78,6 +94,9 @@ proc user_data*(roaming: bool = false, platform: string = nil): string =
             return os.join_path(os.get_env("HOME"), ".local", "share")
 
 proc user_data*(appl: TAppl, platform: string = nil): string =
+    ## Returns the user data directory for a given app for a given platform.
+    ## The platform defaults to the current platform.
+
     var path = user_data(appl.use_roaming, platform)
 
     if get_platform(platform) == "windows":
@@ -97,9 +116,12 @@ proc user_data*(name:string, author:string=nil, version:string=nil, roaming:bool
     return application(name, author, version, roaming).user_data(platform)
 
 
-## USER CONFIG
+# USER CONFIG
 
 proc user_config*(roaming: bool = false, platform: string = nil): string =
+    ## Returns the generic user config directory for a given platform.
+    ## The platform defaults to the currennt platform.
+
     var plat = get_platform(platform)
 
     if plat == "macosx" or plat == "windows":
@@ -111,6 +133,9 @@ proc user_config*(roaming: bool = false, platform: string = nil): string =
             return os.join_path(os.get_env("HOME"), ".config")
 
 proc user_config*(appl: TAppl, platform: string = nil): string =
+    ## Returns the user config directory for a given app for a given platform.
+    ## The platform defaults to the currennt platform.
+
     var path = user_config(appl.use_roaming, platform)
 
     if get_platform(platform) == "windows":
@@ -130,7 +155,7 @@ proc user_config*(name:string, author:string=nil, version:string=nil, roaming:bo
     return application(name, author, version, roaming).user_config(platform)
 
 
-## USER CACHE
+# USER CACHE
 
 proc generic_user_cache(platform: string =  nil): string =
     ## Gets the local users' cache directory.
@@ -191,7 +216,7 @@ proc user_cache*(name:string, author:string=nil, version:string=nil, roaming:boo
     return application(name, author, version, roaming).user_cache(force_cache, platform)
 
 
-## USER LOGS
+# USER LOGS
 
 proc generic_user_logs(platform: string = nil): string =
     ## Gets the logs directory for a given platform.
@@ -209,7 +234,7 @@ proc generic_user_logs(platform: string = nil): string =
     else:
         return user_cache(platform)
 
-proc user_logs(appl: TAppl, force_logs: bool = true, platform: string = nil): string =
+proc user_logs*(appl: TAppl, force_logs: bool = true, platform: string = nil): string =
     ## Gets the logs directory for a platform given application details.
     ##
     ## Note that the only platform for which there is an official user logs directory
@@ -218,6 +243,7 @@ proc user_logs(appl: TAppl, force_logs: bool = true, platform: string = nil): st
     ## 
     ## If force_logs is passed in and evaluates to false, this proc does not append
     ## the extra "logs" directory.
+
     var path = generic_user_logs(platform)
 
     if get_platform(platform) == "windows":
