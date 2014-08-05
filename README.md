@@ -19,6 +19,8 @@ echo user_config(app, platform="windows")
 
 There are functions for the user data folder, the user config folder, the logs folder and the cache folder.  The platform can be any of the string that nimrod's hostOS variable can resolve to, although Appdirs only checks for "macosx" and "windows", and assumes all of the other platforms to be UNIX-y.  If this is not the case, and you have a platform that can provide sensible data, config, logs, and cache folders, fork and send me a pull request.
 
+Documentation files are available at [http://mrjohz.github.io/appdirs/](http://mrjohz.github.io/appdirs/). More specifically you will want to read the [appdirs API](http://mrjohz.github.io/appdirs/docs/master/appdirs.html).
+
 ## To Do List:
 
 - Add site* functions
