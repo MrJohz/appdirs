@@ -76,7 +76,7 @@ proc application*(name:string, author:string=nil, version:string=nil, roaming:bo
 
 proc user_data*(roaming: bool = false, platform: string = nil): string =
     ## Returns the generic user data directory for a given platform.
-    ## The platform defaults to the currennt platform.
+    ## The platform defaults to the current platform.
 
     var plat = get_platform(platform)
 
