@@ -1,4 +1,5 @@
 import nake
+import os
 import strutils
 
 const
@@ -6,11 +7,12 @@ const
     DOCS_DEST = "docs"
 
 task "clean", "Removes nimcache folders, compiled exes":
-    direshell("rm -rf nimcache")
-    direshell("rm -rf appdirs")
+    removeDir("nimcache")
+    removeFile("appdirs")
 
 task "docs", "Adds documentation to the docs/ directory":
-    direshell("rm", "-rf", DOCS_DEST & "/*")
+    DOCS_DEST.removeDir
+    DOCS_DEST.createDir
     for source in DOCS_FILES:
-        let dest = DOCS_DEST & "/" & source.change_file_ext(".html")
+        let dest = DOCS_DEST / source.change_file_ext(".html")
         direshell("nimrod", "doc2", "--verbosity:0", "-o:" & dest, source)
