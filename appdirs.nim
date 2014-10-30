@@ -58,7 +58,7 @@ proc application*(name:string, author:string=nil, version:string=nil, roaming:bo
     ##
     ## If `version` is given, it is appended to any resultant directory.  This allows an application to
     ## have multiple versions installed on one computer.
-    ## 
+    ##
     ## The `roaming` arg is also for Windows systems only, and decides if the directory can be shared
     ## on any computer in a Windows network (roaming=true) or if it will be kept locally
     ## (roaming=false).  Note that the cache and logs directory will always be kept locally.
@@ -120,7 +120,7 @@ proc user_data*(name:string, author:string=nil, version:string=nil, roaming:bool
 
 proc user_config*(roaming: bool = false, platform: string = nil): string =
     ## Returns the generic user config directory for a given platform.
-    ## The platform defaults to the currennt platform.
+    ## The platform defaults to the current platform.
 
     var plat = get_platform(platform)
 
@@ -134,7 +134,7 @@ proc user_config*(roaming: bool = false, platform: string = nil): string =
 
 proc user_config*(appl: TAppl, platform: string = nil): string =
     ## Returns the user config directory for a given app for a given platform.
-    ## The platform defaults to the currennt platform.
+    ## The platform defaults to the current platform.
 
     var path = user_config(appl.use_roaming, platform)
 
@@ -188,7 +188,7 @@ proc user_cache*(appl: TAppl, force_cache:bool = true, platform: string = nil): 
     ## returns this application's Application Data folder.  If `force_cache = true` (the
     ## default) this procedure will add an artificial `Cache` directory inside the app's
     ## appdata folder.  Otherwise, this just returns the user's app data directory.
-    ## 
+    ##
     ## On all other platforms, there is a cache directory to use.
 
     var path = generic_user_cache(platform)
@@ -220,7 +220,7 @@ proc user_cache*(name:string, author:string=nil, version:string=nil, roaming:boo
 
 proc generic_user_logs(platform: string = nil): string =
     ## Gets the logs directory for a given platform.
-    ## 
+    ##
     ## Note that the only platform for which there is an official user logs directory
     ## is macosx.  On Windows, this proc returns the non-roaming user data directory,
     ## while for UNIX-y platforms this proc returns the cache directory.  See the
@@ -240,7 +240,7 @@ proc user_logs*(appl: TAppl, force_logs: bool = true, platform: string = nil): s
     ## Note that the only platform for which there is an official user logs directory
     ## is macosx.  Otherwise, this returns the user data directory (for Windows) or the
     ## user cache directory (UNIX-y platforms), with a "logs" directory appended.
-    ## 
+    ##
     ## If force_logs is passed in and evaluates to false, this proc does not append
     ## the extra "logs" directory.
 
