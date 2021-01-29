@@ -1,4 +1,4 @@
-from os import nil
+import os
 import strutils
 
 ## Appdirs is a small module that finds the dirs for you to app in.
@@ -26,7 +26,7 @@ import strutils
 
 
 type
-    TAppl* = object of TObject
+    TAppl* = object
         name*: string
         author*: string
         version*: string
@@ -34,8 +34,8 @@ type
 
 # USEFUL PROCS
 
-proc get_platform(platform:string = nil): string {.inline noSideEffect.} =
-    if platform == nil:
+proc get_platform(platform:string = ""): string {.inline noSideEffect.} =
+    if platform == "":
         return hostOS
     else:
         return platform
@@ -49,7 +49,7 @@ proc empty_exists(name:string): bool {.inline.} =
 
 # TAPPL CONSTRUCTOR
 
-proc application*(name:string, author:string=nil, version:string=nil, roaming:bool=false): TAppl =
+proc application*(name:string, author:string="", version:string="", roaming:bool=false): TAppl =
     ## Constructs a TAppl object with given args.
     ##
     ## The only required arg is `name`.  If `author` is not given, it defaults to `name`.  This is only
@@ -64,7 +64,7 @@ proc application*(name:string, author:string=nil, version:string=nil, roaming:bo
     ## (roaming=false).  Note that the cache and logs directory will always be kept locally.
 
     var auth: string
-    if author == nil:
+    if author == "":
         auth = name
     else:
         auth = author
@@ -74,7 +74,7 @@ proc application*(name:string, author:string=nil, version:string=nil, roaming:bo
 
 # USER DATA
 
-proc user_data*(roaming: bool = false, platform: string = nil): string =
+proc user_data*(roaming: bool = false, platform: string = ""): string =
     ## Returns the generic user data directory for a given platform.
     ## The platform defaults to the current platform.
 
@@ -93,7 +93,7 @@ proc user_data*(roaming: bool = false, platform: string = nil): string =
         else:
             return os.join_path(os.get_env("HOME"), ".local", "share")
 
-proc user_data*(appl: TAppl, platform: string = nil): string =
+proc user_data*(appl: TAppl, platform: string = ""): string =
     ## Returns the user data directory for a given app for a given platform.
     ## The platform defaults to the current platform.
 
@@ -104,12 +104,12 @@ proc user_data*(appl: TAppl, platform: string = nil): string =
     else:
         path = os.join_path(path, appl.name)
 
-    if appl.version != nil:
+    if appl.version != "":
         path = os.join_path(path, appl.version)
 
     return path
 
-proc user_data*(name:string, author:string=nil, version:string=nil, roaming:bool=false, platform:string=nil): string =
+proc user_data*(name:string, author:string="", version:string="", roaming:bool=false, platform:string=""): string =
     ## Gets the data directory given the details of an application.
     ## This proc creates an application from the arguments, and uses it to call the
     ## `user_data(TAppl)` proc.
@@ -118,7 +118,7 @@ proc user_data*(name:string, author:string=nil, version:string=nil, roaming:bool
 
 # USER CONFIG
 
-proc user_config*(roaming: bool = false, platform: string = nil): string =
+proc user_config*(roaming: bool = false, platform: string = ""): string =
     ## Returns the generic user config directory for a given platform.
     ## The platform defaults to the current platform.
 
@@ -132,7 +132,7 @@ proc user_config*(roaming: bool = false, platform: string = nil): string =
         else:
             return os.join_path(os.get_env("HOME"), ".config")
 
-proc user_config*(appl: TAppl, platform: string = nil): string =
+proc user_config*(appl: TAppl, platform: string = ""): string =
     ## Returns the user config directory for a given app for a given platform.
     ## The platform defaults to the current platform.
 
@@ -143,12 +143,12 @@ proc user_config*(appl: TAppl, platform: string = nil): string =
     else:
         path = os.join_path(path, appl.name)
 
-    if appl.version != nil:
+    if appl.version != "":
         path = os.join_path(path, appl.version)
 
     return path
 
-proc user_config*(name:string, author:string=nil, version:string=nil, roaming:bool=false, platform:string=nil): string =
+proc user_config*(name:string, author:string="", version:string="", roaming:bool=false, platform:string=""): string =
     ## Gets the config directory given the details of an application.
     ## This proc creates an application from the arguments, and uses it to call the
     ## `user_config(TAppl)` proc.
@@ -157,7 +157,7 @@ proc user_config*(name:string, author:string=nil, version:string=nil, roaming:bo
 
 # USER CACHE
 
-proc generic_user_cache(platform: string =  nil): string =
+proc generic_user_cache(platform: string =  ""): string =
     ## Gets the local users' cache directory.
     ##
     ## Note, on Windows there is no "official" cache directory, so instead this procedure
@@ -181,7 +181,7 @@ proc generic_user_cache(platform: string =  nil): string =
         else:
             return os.join_path(os.get_env("HOME"), ".cache")
 
-proc user_cache*(appl: TAppl, force_cache:bool = true, platform: string = nil): string =
+proc user_cache*(appl: TAppl, force_cache:bool = true, platform: string = ""): string =
     ## Gets the cache directory for a given application.
     ##
     ## Note, on Windows there is no "official" cache directory, so instead this procedure
@@ -202,13 +202,13 @@ proc user_cache*(appl: TAppl, force_cache:bool = true, platform: string = nil): 
     else:
         path = os.join_path(path, appl.name)
 
-    if appl.version != nil:
+    if appl.version != "":
         path = os.join_path(path, appl.version)
 
     return path
 
-proc user_cache*(name:string, author:string=nil, version:string=nil, roaming:bool=false,
-        force_cache:bool=true, platform:string=nil): string =
+proc user_cache*(name:string, author:string="", version:string="", roaming:bool=false,
+        force_cache:bool=true, platform:string=""): string =
     ## Gets the cache directory given the details of an application.
     ## This proc creates an application from the arguments, and uses it to call the
     ## `user_cache(TAppl)` proc.
@@ -218,7 +218,7 @@ proc user_cache*(name:string, author:string=nil, version:string=nil, roaming:boo
 
 # USER LOGS
 
-proc generic_user_logs(platform: string = nil): string =
+proc generic_user_logs(platform: string = ""): string =
     ## Gets the logs directory for a given platform.
     ##
     ## Note that the only platform for which there is an official user logs directory
@@ -234,7 +234,7 @@ proc generic_user_logs(platform: string = nil): string =
     else:
         return user_cache(platform)
 
-proc user_logs*(appl: TAppl, force_logs: bool = true, platform: string = nil): string =
+proc user_logs*(appl: TAppl, force_logs: bool = true, platform: string = ""): string =
     ## Gets the logs directory for a platform given application details.
     ##
     ## Note that the only platform for which there is an official user logs directory
@@ -258,13 +258,13 @@ proc user_logs*(appl: TAppl, force_logs: bool = true, platform: string = nil): s
         if get_platform(platform) != "macosx" and force_logs:
             path = os.join_path(path, "logs")
 
-    if appl.version != nil:
+    if appl.version != "":
         path = os.join_path(path, appl.version)
 
     return path
 
-proc user_logs*(name:string, author:string=nil, version:string=nil, roaming:bool=false,
-        force_logs:bool=true, platform:string=nil): string =
+proc user_logs*(name:string, author:string="", version:string="", roaming:bool=false,
+        force_logs:bool=true, platform:string=""): string =
     ## Gets the logs directory given the details of an application.
     ## This proc creates an application from the arguments, and uses it to call the
     ## `user_logs(TAppl)` proc.
